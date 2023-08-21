@@ -11,8 +11,8 @@ function generatePassword() {
 
   // Password length:
   var pwordLength = prompt("Please enter password length. (Must be between 8 and 128)");
-  console.log(typeof(pwordLength));
-  console.log(isNaN(pwordLength));
+  // console.log(typeof(pwordLength));
+  // console.log(isNaN(pwordLength));
   
   // Validate input - must be a number between 8 and 128
   if (isNaN(pwordLength) || pwordLength < 8 || pwordLength > 128) {
@@ -40,7 +40,7 @@ function generatePassword() {
       return errorMessage;
     }
 
-    // Determine what rows of the matrix to use
+    // Determine what rows of the range matrix to use
     var rowSelect = [];
 
     if (lowerCaseYN == true) {
@@ -55,14 +55,14 @@ function generatePassword() {
     if (specialYN == true) {
       rowSelect.push(3);
     }
-    console.log(rowSelect);
+    // console.log(rowSelect);
 
   // String containing all possible characters that will be indexed in the for loop
   allChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789`~!@#$%^&*()-_=+[{]},<.>/?;: \\";
 
   // Matrix containing minimums and maximums defining ranges of numbers that can be used to index the allChars string
-  // Based on the user selected criteria, the subsets of this matrix will be randomly selected
-  // Within that randomly selected subset range, a number will be randomly selected, and this number will be used to index the allChars string
+  // The arrays of this matrix will be randomly selected excluding all the arrays not chosen by the user
+  // Using the randomly selected array, a number will be randomly generated, and this number will be used to index the allChars string
   const possibleRanges = [[0,25],[26,51],[52,61],[62,91]];
   
   // Create a placeholder empty password
