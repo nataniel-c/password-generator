@@ -4,22 +4,29 @@
 
 function generatePassword() {
 
-  // Criteria Selection
+  // Error message to be displayed in the password box whenever something goes wrong.
+  const errorMessage = "Invalid password. Try again.";
+
+
+  // Criteria Selection:
 
   // Password length:
   var pwordLength = prompt("Please enter password length. (Must be between 8 and 128)");
+  console.log(typeof(pwordLength));
+  console.log(isNaN(pwordLength));
   
   // Validate input - must be a number
-  if (typeof(pwordLength) !== "number") {
-    alert("Please input how many characters you want your password to have as a number.");
-    return "Invalid password. Try again.";
+  if (isNaN(pwordLength)) {
+    alert("Please enter your password length as a number between 8 and 128.");
+    return errorMessage;
+
   // Validate input - must be between 8 and 128
   } else if (pwordLength < 8) {
     alert("Password must be 8 characters or longer.");
-    return "Invalid password. Try again.";
+    return errorMessage;
   } else if (pwordLength > 128) {
     alert("Password length can be up to 128 characters.");
-    return "Invalid password. Try again.";
+    return errorMessage;
 
   // Continue to character type selection
   } else {
@@ -34,16 +41,59 @@ function generatePassword() {
 
     // -Special
     var specialYN = confirm("Do you want your password to include special characters?");
+  }
 
     // Validate input: at least one character type
     if (lowerCaseYN == false && upperCaseYN == false && numericYN == false && specialYN == false) {
       alert("Please choose at least one character type for your password.");
-      return "Invalid password. Try again."
-    } else if (lowerCaseYN == true)
-    
+      return errorMessage;
+    }
 
-  var generatedPassword = 
+    // Determine what rows of the matrix to use
+    var rowSelect = [];
 
+    if (lowerCaseYN == true) {
+      rowSelect.push(0);
+    }
+    if (upperCaseYN == true) {
+      rowSelect.push(1);
+    }
+    if (numericYN == true) {
+      rowSelect.push(2);
+    }
+    if (specialYN == true) {
+      rowSelect.push(3);
+    }
+    console.log(rowSelect);
+
+  // String containing all possible characters that will be indexed in the for loop
+  allChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789`~!@#$%^&*()-_=+[{]},<.>/?;:";
+
+  // Matrix containing minimums and maximums defining ranges of numbers that can be used to index the allChars string
+  // Based on the user selected criteria, the subsets of this matrix will be randomly selected
+  // Within that randomly selected subset range, a number will be randomly selected, and this number will be used to index the allChars string
+  const possibleRanges = [[0,25],[26,52],[53,63],[64,91]];
+  
+  // Create a placeholder empty password
+  var generatedPassword = "";
+
+  // For loop that assigns each character in password
+  for (var i=1; i <= pwordLength; i++) {
+
+    // Choose the range of the index from possibleRanges randomly from the given list of possible rows
+    var randomRow = rowSelect[Math.floor(Math.random() * rowSelect.length)];
+
+    // Create a range of characters within the allChars string based on the randomly selected range
+    var min = Math.ceil(possibleRanges[randomRow][0]);
+    var max = Math.floor(possibleRanges[randomRow][1]);
+
+    // Make a random index number from the max and min that fits within the selected criteria
+    randomIndex = Math.floor(Math.random() * (max - min + 1) + min);
+
+    // Use that random index number to select a character from allChars and add it to the password
+    generatedPassword += allChars[randomIndex];
+
+  }
 
   return generatedPassword;
 }
@@ -57,7 +107,6 @@ var generateBtn = document.querySelector("#generate");
 function writePassword() {
   var password = generatePassword();
   var passwordText = document.querySelector("#password");
-
   passwordText.value = password;
 
 }
