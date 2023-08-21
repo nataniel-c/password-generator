@@ -5,8 +5,7 @@
 function generatePassword() {
 
   // Error message to be displayed in the password box whenever something goes wrong.
-  const errorMessage = "Invalid password. Try again.";
-
+  const errorMessage = "Password generation failed. Please try again.";
 
   // Criteria Selection:
 
@@ -15,23 +14,15 @@ function generatePassword() {
   console.log(typeof(pwordLength));
   console.log(isNaN(pwordLength));
   
-  // Validate input - must be a number
-  if (isNaN(pwordLength)) {
+  // Validate input - must be a number between 8 and 128
+  if (isNaN(pwordLength) || pwordLength < 8 || pwordLength > 128) {
     alert("Please enter your password length as a number between 8 and 128.");
-    return errorMessage;
-
-  // Validate input - must be between 8 and 128
-  } else if (pwordLength < 8) {
-    alert("Password must be 8 characters or longer.");
-    return errorMessage;
-  } else if (pwordLength > 128) {
-    alert("Password length can be up to 128 characters.");
     return errorMessage;
 
   // Continue to character type selection
   } else {
     // -Lowercase
-    var lowerCaseYN = confirm("Do you want your password to include lowercase characters?");
+    var lowerCaseYN = confirm("Do you want your password to include lowercase characters?\n(Click OK for ''Yes'' and Cancel for ''No'')");
     
     // -Uppercase
     var upperCaseYN = confirm("Do you want your password to include uppercase characters?");
@@ -72,7 +63,7 @@ function generatePassword() {
   // Matrix containing minimums and maximums defining ranges of numbers that can be used to index the allChars string
   // Based on the user selected criteria, the subsets of this matrix will be randomly selected
   // Within that randomly selected subset range, a number will be randomly selected, and this number will be used to index the allChars string
-  const possibleRanges = [[0,25],[26,52],[53,63],[64,91]];
+  const possibleRanges = [[0,25],[26,51],[52,61],[62,89]];
   
   // Create a placeholder empty password
   var generatedPassword = "";
